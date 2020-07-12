@@ -10,9 +10,8 @@ const PostBar = () => {
     const [title, setTitle] = useState('');
     const [text, setText] = useState('');
 
-    const getuserName = async () => {
-
-    }
+    const [quote, setQuote] = useState('');
+    const [source, setSource] = useState('');
 
     const updateTitle = (e) => {
         setTitle(e.target.value);
@@ -20,6 +19,14 @@ const PostBar = () => {
 
     const updateText = (e) => {
         setText(e.target.value);
+    }
+
+    const updateQuote = (e) => {
+        setQuote(e.target.value);
+    }
+
+    const updateSource = (e) => {
+        setSource(e.target.value);
     }
 
     const handleTextPost = async (e) => {
@@ -63,6 +70,47 @@ const PostBar = () => {
 
     }
 
+    const handleQuotePost = async (e) => {
+        e.preventDefault();
+        let postId;
+        const response = await fetch(`${baseUrl}/api/posts`, {
+            method: 'post',
+            headers: {
+                'Authorization': `Bearer ${authToken}`,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                postTypeId: 3
+            })
+        });
+        if (response.ok) {
+            const json = await response.json()
+            postId = Number.parseInt(json.post.id)
+            console.log(json)
+
+        }
+        console.log(postId)
+        const res = await fetch(`${baseUrl}/api/posts/quote`, {
+            method: 'post',
+            headers: {
+                'Authorization': `Bearer ${authToken}`,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                postId,
+                quote,
+                source,
+                postTypeId: 3
+            })
+        });
+        if (res.ok) {
+            const quotePost = await res.json();
+            console.log(quotePost);
+        }
+        window.location.reload();
+
+    }
+
     const handleTextModal = (e) => {
         e.preventDefault();
         const modal = document.querySelector('.modal-text');
@@ -74,6 +122,19 @@ const PostBar = () => {
         const modal = document.querySelector('.modal-text');
         modal.classList.add('modal-text--hidden');
     }
+
+    const handleQuoteModal = (e) => {
+        e.preventDefault();
+        const modal = document.querySelector('.modal-quote');
+        modal.classList.remove('modal-quote--hidden');
+    }
+
+    const handleQuoteClose = (e) => {
+        e.preventDefault();
+        const modal = document.querySelector('.modal-quote');
+        modal.classList.add('modal-quote--hidden');
+    }
+
     return (
         <div className='post-bar__container'>
             <button className='post__button' type='submit' onClick={handleTextModal}>
@@ -84,7 +145,7 @@ const PostBar = () => {
                 <PhotoCameraIcon style={{ fontSize: 40 }} className='post__icon-photo' />
                 <p id='photo'>Photo</p>
             </button>
-            <button className='post__button' type='submit' >
+            <button className='post__button' type='submit' onClick={handleQuoteModal}>
                 <FormatQuoteIcon style={{ fontSize: 40 }} className='post__icon-quote' />
                 <p id='quote'>Quote</p>
             </button>
@@ -104,22 +165,22 @@ const PostBar = () => {
                     </div>
                 </form>
             </div>
-            {/* <div className='modal-quote modal-quote--hidden'> */}
-
-            {/* <form className='post__quote-form' onSubmit={handleQuotePost}>
+            <div className='modal-quote modal-quote--hidden'>
+                <form className='post__quote-form' onSubmit={handleQuotePost}>
                     <div>
                         <p className='username'>{username}</p>
-                        <input className='title-text' type='text' placeholder='Title' onChange={updateTitle} />
+                        <textarea className='quote-quote' type='text' placeholder='Quote' onChange={updateQuote} />
                     </div>
-                    <div>
-                        <textarea className='text-text' type='text' placeholder='Your text here' onChange={updateText} />
+                    <div className='source__container'>
+                        <span id='slash'>&#8211;</span>
+                        <input className='source-quote' type='text' placeholder='source' onChange={updateSource} />
                     </div>
                     <div className='button__container'>
-                        <button className='button__close' type='submit' onClick={handleTextClose}>Close</button>
+                        <button className='button__close' type='submit' onClick={handleQuoteClose}>Close</button>
                         <button className='button__post' type='submit'>Post</button>
                     </div>
-                </form> */}
-            {/* </div> */}
+                </form>
+            </div>
         </div>
     )
 }

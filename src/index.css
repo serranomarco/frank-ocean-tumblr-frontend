@@ -146,7 +146,7 @@ color: rgb(0, 4, 218);
 }
 
 
-.modal-text, .modal-text-edit{
+.modal-text, .modal-text-edit, .modal-quote, .modal-quote-edit, .modal-photo, .modal-photo-edit{
     position: absolute;
     top: 0px;
     right: 0px;
@@ -158,7 +158,7 @@ color: rgb(0, 4, 218);
     align-items: center;
 }
 
-.post__text-form{
+.post__text-form, .post__quote-form{
     padding: 20px 20px;
     background-color: white;
     width: 480px;
@@ -169,7 +169,7 @@ color: rgb(0, 4, 218);
 
 }
 
-.modal-text--hidden, .modal-text-edit--hidden{
+.modal-text--hidden, .modal-text-edit--hidden, .modal-quote--hidden, .modal-quote-edit--hidden{
     display: none;
 }
 
@@ -203,6 +203,7 @@ color: rgb(0, 4, 218);
 }
 
 .title-text{
+    font-family: Arial, Helvetica, sans-serif;
     border: none;
     font-size: 30px;
     width: 470px;
@@ -217,11 +218,43 @@ color: rgb(0, 4, 218);
     resize: none;
 }
 
+.quote-container{
+    display: flex;
+    flex-direction: row;
+}
+
+.quote-quote{
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    font-size: 50px;
+    border: none;
+    width: 470px;
+    height: 190px;
+    margin-bottom: 5px;
+    resize: none;
+}
+
+#slash{
+    margin-top: 2px;
+    padding-left: 30px;
+}
+.source-quote{
+    border: none;
+    font-size: 15px;
+    font-family: Arial, Helvetica, sans-serif;
+    height: 20px;
+}
+
+.source__container{
+    display: flex;
+    flex-direction: row;
+}
+
 .username{
     font-family: Arial, Helvetica, sans-serif;
-    font-size: 15px;
+    font-size: 13px;
     font-weight: bold;
     margin-top: 0px;
+    padding-left: 5px;
 }
 
 .container{
@@ -258,11 +291,12 @@ color: rgb(0, 4, 218);
 .post__username{
     font-weight: 600;
     font-family: Arial, Helvetica, sans-serif;
-    font-size: 15px;
+    font-size: 13px;
 }
 
 .post__title{
-    font-size: 35px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 25px;
     padding: 15px 0;
 }
 
