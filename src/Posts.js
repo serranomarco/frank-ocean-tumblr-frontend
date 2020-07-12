@@ -5,10 +5,11 @@ import ChatBubbleOutlineOutlinedIcon from '@material-ui/icons/ChatBubbleOutlineO
 import FavoriteBorderOutlinedIcon from '@material-ui/icons/FavoriteBorderOutlined';
 import DeleteOutlinedIcon from '@material-ui/icons/DeleteOutlined';
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
+import FavoriteIcon from '@material-ui/icons/Favorite';
 
 const Posts = () => {
     const { authToken, userId, username } = useContext(EndlessContext);
-    const [liked, setLiked] = useState(false);
+    const [likedPosts, setLikedPosts] = useState([]);
     const [posts, setPosts] = useState([]);
     const [title, setTitle] = useState('');
     const [text, setText] = useState('');
@@ -33,29 +34,18 @@ const Posts = () => {
     }
 
     const handleLike = async (e) => {
-        e.preventDefault();
         const id = e.target.getAttribute('id')
-        if (!liked) {
-            const response = fetch(`${baseUrl}/api/posts/${id}/like`, {
-                method: 'post',
-                headers: {
-                    'Authorization': `Bearer ${authToken}`
-                }
-            });
-            if (response.ok) {
-                setLiked(true);
+        const response = fetch(`${baseUrl}/api/posts/${id}/like`, {
+            method: 'post',
+            headers: {
+                'Authorization': `Bearer ${authToken}`
             }
-        } else {
-            const response = fetch(`${baseUrl}/api/posts/${id}/like`, {
-                method: 'delete',
-                headers: {
-                    'Authorization': `Bearer ${authToken}`
-                }
-            });
-            if (response.ok) {
-                setLiked(false);
-            }
+        });
+        if (response.ok) {
+            const json = response.json();
         }
+        window.location.reload()
+
     }
 
     const handleTextDelete = async (e) => {
@@ -79,8 +69,8 @@ const Posts = () => {
         }
         if (deleteTextPost.ok) {
             const json = await deleteTextPost.json();
+            post.remove();
         }
-        post.remove();
     }
 
     const handleQuoteDelete = async (e) => {
@@ -104,8 +94,8 @@ const Posts = () => {
         }
         if (deleteQuotePost.ok) {
             const json = await deleteQuotePost.json();
+            post.remove();
         }
-        post.remove();
     }
 
     const handleTextModal = async (e) => {
@@ -176,6 +166,14 @@ const Posts = () => {
         });
     }
 
+    const updateLikedPosts = (likedPosts) => {
+        const likedPostsArr = [];
+        for (const posts of likedPosts) {
+            likedPostsArr.push(posts.postId)
+        }
+        setLikedPosts(likedPostsArr);
+    }
+
     useEffect(() => {
         async function fetchData() {
             const response = await fetch(`${baseUrl}/api/posts/following/${userId}`, {
@@ -186,19 +184,20 @@ const Posts = () => {
             })
             if (response.ok) {
                 const json = await response.json();
-                console.log(json)
-                setPosts(json.sortedPosts)
+                setPosts(json.sortedPosts);
+                updateLikedPosts(json.likedPosts);
             }
         }
         fetchData();
     }, [userId, authToken])
 
+
     return (
         posts.map(post => {
-            console.log(post)
+            console.log(likedPosts.includes(post.id))
             if (post.postTypeId === 1) {
                 return (
-                    <div className='container' key={post.id}>
+                    <div className='container' id={post.id} key={post.id}>
                         <div className='post__profile-pic-container'>
                             <img className='post__profile-pic' alt='profile-pic' src={post.User.profilePicPath} />
                         </div>
@@ -211,7 +210,7 @@ const Posts = () => {
                                     <ChatBubbleOutlineOutlinedIcon style={{ fontSize: 30 }} className='post__comment' />
                                 </button>
                                 <button id={post.id} className='text-post__button' type='submit' onClick={handleLike}>
-                                    <FavoriteBorderOutlinedIcon style={{ fontSize: 30 }} className='post__like' />
+                                    {likedPosts.includes(post.id) ? <FavoriteIcon style={{ fontSize: 30 }} className='post__liked' /> : <FavoriteBorderOutlinedIcon style={{ fontSize: 30 }} className='post__like' />}
                                 </button>
                                 <button id={post.id} className='text-post__button' type='submit' onClick={handleTextDelete}>
                                     <DeleteOutlinedIcon style={{ fontSize: 30 }} className='post__delete' />
@@ -255,7 +254,7 @@ const Posts = () => {
                                     <ChatBubbleOutlineOutlinedIcon style={{ fontSize: 30 }} className='post__comment' />
                                 </button>
                                 <button id={post.id} className='text-post__button' type='submit' onClick={handleLike}>
-                                    <FavoriteBorderOutlinedIcon style={{ fontSize: 30 }} className='post__like' />
+                                    {likedPosts.includes(post.id) ? <FavoriteIcon style={{ fontSize: 30 }} className='post__liked' /> : <FavoriteBorderOutlinedIcon style={{ fontSize: 30 }} className='post__like' />}
                                 </button>
                                 <button id={post.id} className='text-post__button' type='submit' onClick={handleQuoteDelete}>
                                     <DeleteOutlinedIcon style={{ fontSize: 30 }} className='post__delete' />

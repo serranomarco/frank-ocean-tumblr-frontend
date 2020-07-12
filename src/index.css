@@ -279,7 +279,7 @@ color: rgb(0, 4, 218);
     padding-top: 20px;
     background-color: white;
     width: 540px;
-    margin-top: 50px;
+    margin-top: 25px;
     border-radius: 5px;
 }
 
@@ -323,6 +323,10 @@ color: rgb(0, 4, 218);
     padding: 0px 0px;
     color: grey;
     pointer-events: none;
+}
+
+.post__liked{
+    color: red;
 }
 
 .text-post__button{
