@@ -8,6 +8,7 @@ import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
 
 const Posts = () => {
     const { authToken, userId, username } = useContext(EndlessContext);
+    const [liked, setLiked] = useState(false);
     const [posts, setPosts] = useState([]);
     const [title, setTitle] = useState('');
     const [text, setText] = useState('');
@@ -31,9 +32,35 @@ const Posts = () => {
         setSource(e.target.value);
     }
 
-    const handleDelete = async (e) => {
+    const handleLike = async (e) => {
+        e.preventDefault();
+        const id = e.target.getAttribute('id')
+        if (!liked) {
+            const response = fetch(`${baseUrl}/api/posts/${id}/like`, {
+                method: 'post',
+                headers: {
+                    'Authorization': `Bearer ${authToken}`
+                }
+            });
+            if (response.ok) {
+                setLiked(true);
+            }
+        } else {
+            const response = fetch(`${baseUrl}/api/posts/${id}/like`, {
+                method: 'delete',
+                headers: {
+                    'Authorization': `Bearer ${authToken}`
+                }
+            });
+            if (response.ok) {
+                setLiked(false);
+            }
+        }
+    }
+
+    const handleTextDelete = async (e) => {
         const id = e.target.getAttribute('id');
-        const post = e.target.parentNode.parentNode
+        const post = e.target.parentNode.parentNode.parentNode
         e.preventDefault();
         const deletePost = await fetch(`${baseUrl}/api/posts/${id}/text`, {
             method: 'DELETE',
@@ -41,7 +68,7 @@ const Posts = () => {
                 'Authorization': `Bearer ${authToken}`
             }
         });
-        const deleteTextPost = await fetch(`${baseUrl}/api/posts/${postId}`, {
+        const deleteTextPost = await fetch(`${baseUrl}/api/posts/${id}`, {
             method: 'DELETE',
             headers: {
                 'Authorization': `Bearer ${authToken}`
@@ -49,11 +76,34 @@ const Posts = () => {
         });
         if (deletePost.ok) {
             const json = await deletePost.json();
-            console.log(json);
         }
         if (deleteTextPost.ok) {
             const json = await deleteTextPost.json();
-            console.log(json);
+        }
+        post.remove();
+    }
+
+    const handleQuoteDelete = async (e) => {
+        const id = e.target.getAttribute('id');
+        const post = e.target.parentNode.parentNode.parentNode
+        e.preventDefault();
+        const deletePost = await fetch(`${baseUrl}/api/posts/${id}/quote`, {
+            method: 'DELETE',
+            headers: {
+                'Authorization': `Bearer ${authToken}`
+            }
+        });
+        const deleteQuotePost = await fetch(`${baseUrl}/api/posts/${id}`, {
+            method: 'DELETE',
+            headers: {
+                'Authorization': `Bearer ${authToken}`
+            }
+        });
+        if (deletePost.ok) {
+            const json = await deletePost.json();
+        }
+        if (deleteQuotePost.ok) {
+            const json = await deleteQuotePost.json();
         }
         post.remove();
     }
@@ -88,12 +138,18 @@ const Posts = () => {
 
     const handleTextClose = (e) => {
         e.preventDefault();
+        const modal = document.querySelector('.modal-text-edit');
+        modal.classList.add('modal-text-edit--hidden');
+    }
+
+    const handleQuoteClose = (e) => {
+        e.preventDefault();
         const modal = document.querySelector('.modal-quote-edit');
         modal.classList.add('modal-quote-edit--hidden');
     }
 
     const handleEditTextPost = async (e) => {
-        const response = await fetch(`${baseUrl}/api/posts/${postId}`, {
+        const response = await fetch(`${baseUrl}/api/posts/${postId}/text`, {
             method: 'put',
             headers: {
                 'Authorization': `Bearer ${authToken}`,
@@ -102,6 +158,20 @@ const Posts = () => {
             body: JSON.stringify({
                 title,
                 text
+            })
+        });
+    }
+
+    const handleEditQuotePost = async (e) => {
+        const response = await fetch(`${baseUrl}/api/posts/${postId}/quote`, {
+            method: 'put',
+            headers: {
+                'Authorization': `Bearer ${authToken}`,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                quote,
+                source
             })
         });
     }
@@ -116,6 +186,7 @@ const Posts = () => {
             })
             if (response.ok) {
                 const json = await response.json();
+                console.log(json)
                 setPosts(json.sortedPosts)
             }
         }
@@ -136,13 +207,13 @@ const Posts = () => {
                             <div className='post__title'>{post.Texts[0].title}</div>
                             <div className='post__text'>{post.Texts[0].text}</div>
                             <div className='post__icon-container'>
-                                <button className='text-post__button' type='submit'>
+                                <button id={post.id} className='text-post__button' type='submit'>
                                     <ChatBubbleOutlineOutlinedIcon style={{ fontSize: 30 }} className='post__comment' />
                                 </button>
-                                <button className='text-post__button' type='submit'>
+                                <button id={post.id} className='text-post__button' type='submit' onClick={handleLike}>
                                     <FavoriteBorderOutlinedIcon style={{ fontSize: 30 }} className='post__like' />
                                 </button>
-                                <button id={post.id} className='text-post__button' type='submit' onClick={handleDelete}>
+                                <button id={post.id} className='text-post__button' type='submit' onClick={handleTextDelete}>
                                     <DeleteOutlinedIcon style={{ fontSize: 30 }} className='post__delete' />
                                 </button>
                                 <button id={post.id} className='text-post__button' type='submit' onClick={handleTextModal}>
@@ -177,16 +248,16 @@ const Posts = () => {
                         </div>
                         <div className='post__container'>
                             <div className='post__username'>{username}</div>
-                            <div className='post__title'>{post.Quotes[0].quote}</div>
-                            <div className='post__text'>{post.Quotes[0].source}</div>
+                            <div className='post__quote'>{post.Quotes[0].quote}</div>
+                            <div className='post__source'>{post.Quotes[0].source}</div>
                             <div className='post__icon-container'>
-                                <button className='text-post__button' type='submit'>
+                                <button id={post.id} className='text-post__button' type='submit'>
                                     <ChatBubbleOutlineOutlinedIcon style={{ fontSize: 30 }} className='post__comment' />
                                 </button>
-                                <button className='text-post__button' type='submit'>
+                                <button id={post.id} className='text-post__button' type='submit' onClick={handleLike}>
                                     <FavoriteBorderOutlinedIcon style={{ fontSize: 30 }} className='post__like' />
                                 </button>
-                                <button id={post.id} className='text-post__button' type='submit' onClick={handleDelete}>
+                                <button id={post.id} className='text-post__button' type='submit' onClick={handleQuoteDelete}>
                                     <DeleteOutlinedIcon style={{ fontSize: 30 }} className='post__delete' />
                                 </button>
                                 <button id={post.id} className='text-post__button' type='submit' onClick={handleQuoteModal}>
@@ -203,8 +274,8 @@ const Posts = () => {
                                         <input className='source-quote' value={source} type='text' placeholder='source' onChange={updateSource} />
                                     </div>
                                     <div className='button__container'>
-                                        <button className='button__close' type='submit' onClick={handleTextClose}>Close</button>
-                                        <button className='button__post' id={postId} type='submit' onClick={handleEditTextPost}>Post</button>
+                                        <button className='button__close' type='submit' onClick={handleQuoteClose}>Close</button>
+                                        <button className='button__post' id={postId} type='submit' onClick={handleEditQuotePost}>Post</button>
                                     </div>
                                 </form>
                             </div>

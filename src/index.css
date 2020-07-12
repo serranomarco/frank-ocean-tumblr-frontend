@@ -147,7 +147,7 @@ color: rgb(0, 4, 218);
 
 
 .modal-text, .modal-text-edit, .modal-quote, .modal-quote-edit, .modal-photo, .modal-photo-edit{
-    position: absolute;
+    position: fixed;
     top: 0px;
     right: 0px;
     left: 0px;
@@ -286,6 +286,13 @@ color: rgb(0, 4, 218);
 .post__text{
     font-family: Arial, Helvetica, sans-serif;
     padding-top: 9px;
+    margin-left: 2px;
+}
+
+.post__source{
+    font-family: Arial, Helvetica, sans-serif;
+    padding-top: 9px;
+    margin-left: 2px;
 }
 
 .post__username{
@@ -297,6 +304,12 @@ color: rgb(0, 4, 218);
 .post__title{
     font-family: Arial, Helvetica, sans-serif;
     font-size: 25px;
+    padding: 15px 0;
+}
+
+.post__quote{
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    font-size: 30px;
     padding: 15px 0;
 }
 
