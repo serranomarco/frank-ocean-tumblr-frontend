@@ -1,7 +1,12 @@
 /* TODO Add site wide styles */
 body{
     /* background-color: #087437; */
-    background-color: #2c5f2dff;
+    /* background-color: #49986b; */
+    background-image: url('https://i.imgur.com/GtRfQ4d.gif');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
+
 }
 main{
     display: flex;
@@ -11,7 +16,7 @@ main{
 
 }
 .title{
-    color: #2c5f2dff;
+    color: #49986b;
     font-family: merriweather;
     font-size:70px;
 }
@@ -45,7 +50,7 @@ main{
 }
 .login__button{
     /* background-color: #00b8ff; */
-    background-color: #2c5f2dff;
+    background-color: #49986b;
     font-weight: 700;
     color:white;
     font-family: Arial, Helvetica, sans-serif;
@@ -63,7 +68,7 @@ main{
 
 .logo{
     margin: 0px;
-    color:#2c5f2dff;
+    color:#49986b;
     font-family: merriweather;
     font-size:60px;
 }
@@ -86,8 +91,7 @@ main{
     padding-left: 10px;
     align-items: center;
     justify-content: space-between;
-    border-bottom: 1px solid black;
-    background-color: #2c5f2dff;
+    background-color: #49986b;
     padding: 0 10px;
 }
 
@@ -158,7 +162,7 @@ color: rgb(0, 4, 218);
     align-items: center;
 }
 
-.post__text-form, .post__quote-form{
+.post__text-form, .post__quote-form, .post__photo-form{
     padding: 20px 20px;
     background-color: white;
     width: 480px;
@@ -169,7 +173,9 @@ color: rgb(0, 4, 218);
 
 }
 
-.modal-text--hidden, .modal-text-edit--hidden, .modal-quote--hidden, .modal-quote-edit--hidden{
+.modal-text--hidden, .modal-text-edit--hidden,
+.modal-quote--hidden, .modal-quote-edit--hidden,
+.modal-photo--hidden, .modal-photo-edit--hidden{
     display: none;
 }
 
@@ -279,11 +285,17 @@ color: rgb(0, 4, 218);
     padding-top: 20px;
     background-color: white;
     width: 540px;
-    margin-top: 25px;
+    margin-top: 17px;
     border-radius: 5px;
 }
 
 .post__text{
+    font-family: Arial, Helvetica, sans-serif;
+    padding-top: 9px;
+    margin-left: 2px;
+}
+
+.post__caption{
     font-family: Arial, Helvetica, sans-serif;
     padding-top: 9px;
     margin-left: 2px;
@@ -307,6 +319,12 @@ color: rgb(0, 4, 218);
     padding: 15px 0;
 }
 
+.post__image{
+    margin-top: 15px;
+    margin-bottom: 15px;
+    width: 500px;
+}
+
 .post__quote{
     font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
     font-size: 30px;
@@ -319,7 +337,7 @@ color: rgb(0, 4, 218);
     padding: 10px 0;
 }
 
-.post__comment, .post__like, .post__delete, .post__edit{
+.post__comment, .post__like, .post__liked, .post__delete, .post__edit{
     padding: 0px 0px;
     color: grey;
     pointer-events: none;

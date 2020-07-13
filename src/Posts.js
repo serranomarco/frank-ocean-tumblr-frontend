@@ -34,17 +34,24 @@ const Posts = () => {
     }
 
     const handleLike = async (e) => {
-        const id = e.target.getAttribute('id')
-        const response = fetch(`${baseUrl}/api/posts/${id}/like`, {
-            method: 'post',
-            headers: {
-                'Authorization': `Bearer ${authToken}`
-            }
-        });
-        if (response.ok) {
-            const json = response.json();
+        const id = Number(e.target.getAttribute('id'))
+        if (!likedPosts.includes(id)) {
+            const response = fetch(`${baseUrl}/api/posts/${id}/like`, {
+                method: 'post',
+                headers: {
+                    'Authorization': `Bearer ${authToken}`
+                }
+            });
+
+        } else {
+            const response = fetch(`${baseUrl}/api/posts/${id}/like`, {
+                method: 'delete',
+                headers: {
+                    'Authorization': `Bearer ${authToken}`
+                }
+            });
         }
-        window.location.reload()
+        window.location.reload();
 
     }
 
@@ -94,6 +101,31 @@ const Posts = () => {
         }
         if (deleteQuotePost.ok) {
             const json = await deleteQuotePost.json();
+            post.remove();
+        }
+    }
+
+    const handlePhotoDelete = async (e) => {
+        const id = e.target.getAttribute('id');
+        const post = e.target.parentNode.parentNode.parentNode
+        e.preventDefault();
+        const deletePost = await fetch(`${baseUrl}/api/posts/${id}/photo`, {
+            method: 'DELETE',
+            headers: {
+                'Authorization': `Bearer ${authToken}`
+            }
+        });
+        const deletePhotoPost = await fetch(`${baseUrl}/api/posts/${id}`, {
+            method: 'DELETE',
+            headers: {
+                'Authorization': `Bearer ${authToken}`
+            }
+        });
+        if (deletePost.ok) {
+            const json = await deletePost.json();
+        }
+        if (deletePhotoPost.ok) {
+            const json = await deletePhotoPost.json();
             post.remove();
         }
     }
@@ -194,7 +226,6 @@ const Posts = () => {
 
     return (
         posts.map(post => {
-            console.log(likedPosts.includes(post.id))
             if (post.postTypeId === 1) {
                 return (
                     <div className='container' id={post.id} key={post.id}>
@@ -202,7 +233,7 @@ const Posts = () => {
                             <img className='post__profile-pic' alt='profile-pic' src={post.User.profilePicPath} />
                         </div>
                         <div className='post__container'>
-                            <div className='post__username'>{username}</div>
+                            <div className='post__username'>{post.User.userName}</div>
                             <div className='post__title'>{post.Texts[0].title}</div>
                             <div className='post__text'>{post.Texts[0].text}</div>
                             <div className='post__icon-container'>
@@ -212,6 +243,7 @@ const Posts = () => {
                                 <button id={post.id} className='text-post__button' type='submit' onClick={handleLike}>
                                     {likedPosts.includes(post.id) ? <FavoriteIcon style={{ fontSize: 30 }} className='post__liked' /> : <FavoriteBorderOutlinedIcon style={{ fontSize: 30 }} className='post__like' />}
                                 </button>
+
                                 <button id={post.id} className='text-post__button' type='submit' onClick={handleTextDelete}>
                                     <DeleteOutlinedIcon style={{ fontSize: 30 }} className='post__delete' />
                                 </button>
@@ -239,6 +271,33 @@ const Posts = () => {
                 )
             } else if (post.postTypeId === 2) {
                 //manage photo post
+                return (
+                    <div className='container' id={post.id} key={post.id}>
+                        <div className='post__profile-pic-container'>
+                            <img className='post__profile-pic' alt='profile-pic' src={post.User.profilePicPath} />
+                        </div>
+                        <div className='post__container'>
+                            <div className='post__username'>{post.User.userName}</div>
+                            <img className='post__image' alt={`post`} src={post.Photos[0].photoUrl} />
+                            <div className='post__caption'>{post.Photos[0].caption}</div>
+                            <div className='post__icon-container'>
+                                <button id={post.id} className='text-post__button' type='submit'>
+                                    <ChatBubbleOutlineOutlinedIcon style={{ fontSize: 30 }} className='post__comment' />
+                                </button>
+                                <button id={post.id} className='text-post__button' type='submit' onClick={handleLike}>
+                                    {likedPosts.includes(post.id) ? <FavoriteIcon style={{ fontSize: 30 }} className='post__liked' /> : <FavoriteBorderOutlinedIcon style={{ fontSize: 30 }} className='post__like' />}
+                                </button>
+
+                                <button id={post.id} className='text-post__button' type='submit' onClick={handlePhotoDelete}>
+                                    <DeleteOutlinedIcon style={{ fontSize: 30 }} className='post__delete' />
+                                </button>
+                                <button id={post.id} className='text-post__button' type='submit' onClick={handleTextModal}>
+                                    <EditOutlinedIcon style={{ fontSize: 30 }} className='post__edit' />
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                )
             } else if (post.postTypeId === 3) {
                 return (
                     <div className='container' key={post.id}>
@@ -246,7 +305,7 @@ const Posts = () => {
                             <img className='post__profile-pic' alt='profile-pic' src={post.User.profilePicPath} />
                         </div>
                         <div className='post__container'>
-                            <div className='post__username'>{username}</div>
+                            <div className='post__username'>{post.User.userName}</div>
                             <div className='post__quote'>{post.Quotes[0].quote}</div>
                             <div className='post__source'>{post.Quotes[0].source}</div>
                             <div className='post__icon-container'>

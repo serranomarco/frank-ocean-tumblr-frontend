@@ -13,6 +13,7 @@ const PostBar = () => {
     const [quote, setQuote] = useState('');
     const [source, setSource] = useState('');
 
+
     const updateTitle = (e) => {
         setTitle(e.target.value);
     }
@@ -70,6 +71,54 @@ const PostBar = () => {
 
     }
 
+    const handlePhotoPost = async (e) => {
+        e.preventDefault()
+        let postId;
+        const formData = new FormData();
+        const fileField = document.querySelector('input[type="file"]');
+        const captionField = document.querySelector('textarea[name="caption"]');
+        const postTypeIdField = document.querySelector('input[name="postTypeId"]');
+
+        console.log(fileField.files[0])
+
+        const response = await fetch(`${baseUrl}/api/posts`, {
+            method: 'post',
+            headers: {
+                'Authorization': `Bearer ${authToken}`,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                postTypeId: 2
+            })
+        });
+        if (response.ok) {
+            const json = await response.json()
+            postId = Number.parseInt(json.post.id)
+        }
+        formData.append('key', 'value')
+        formData.append('image', fileField.files[0]);
+        formData.append('caption', captionField.value);
+        formData.append('postTypeId', postTypeIdField.value);
+        formData.append('postId', postId);
+
+        for (const key of formData) {
+            console.log(key);
+        }
+
+        const res = await fetch(`${baseUrl}/api/posts/photo`, {
+            method: 'post',
+            headers: {
+                'Authorization': `Bearer ${authToken}`,
+            },
+            body: formData
+        });
+        if (res.ok) {
+            const photoPost = await res.json();
+            console.log(photoPost);
+        }
+        window.location.reload();
+    }
+
     const handleQuotePost = async (e) => {
         e.preventDefault();
         let postId;
@@ -123,6 +172,18 @@ const PostBar = () => {
         modal.classList.add('modal-text--hidden');
     }
 
+    const handlePhotoModal = (e) => {
+        e.preventDefault();
+        const modal = document.querySelector('.modal-photo');
+        modal.classList.remove('modal-photo--hidden');
+    }
+
+    const handlePhotoClose = (e) => {
+        e.preventDefault();
+        const modal = document.querySelector('.modal-photo');
+        modal.classList.add('modal-photo--hidden');
+    }
+
     const handleQuoteModal = (e) => {
         e.preventDefault();
         const modal = document.querySelector('.modal-quote');
@@ -141,7 +202,7 @@ const PostBar = () => {
                 <TextFieldsIcon style={{ fontSize: 40 }} className='post__icon-text' />
                 <p id='text'>Text</p>
             </button>
-            <button className='post__button' type='submit' >
+            <button className='post__button' type='submit' onClick={handlePhotoModal}>
                 <PhotoCameraIcon style={{ fontSize: 40 }} className='post__icon-photo' />
                 <p id='photo'>Photo</p>
             </button>
@@ -161,6 +222,23 @@ const PostBar = () => {
                     </div>
                     <div className='button__container'>
                         <button className='button__close' type='submit' onClick={handleTextClose}>Close</button>
+                        <button className='button__post' type='submit'>Post</button>
+                    </div>
+                </form>
+            </div>
+            <div className='modal-photo modal-photo--hidden'>
+
+                <form className='post__photo-form' onSubmit={handlePhotoPost}>
+                    <div>
+                        <p className='username'>{username}</p>
+                        <input name='image' className='image-photo' type='file' accept='image/jpeg' placeholder='Title' />
+                    </div>
+                    <div>
+                        <textarea name='caption' className='caption-photo' type='text' placeholder='Caption' />
+                        <input name='postTypeId' type='hidden' value='2' />
+                    </div>
+                    <div className='button__container'>
+                        <button className='button__close' type='submit' onClick={handlePhotoClose}>Close</button>
                         <button className='button__post' type='submit'>Post</button>
                     </div>
                 </form>
