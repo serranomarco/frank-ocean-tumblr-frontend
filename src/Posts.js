@@ -271,6 +271,7 @@ const Posts = () => {
                 )
             } else if (post.postTypeId === 2) {
                 //manage photo post
+                console.log(post)
                 return (
                     <div className='container' id={post.id} key={post.id}>
                         <div className='post__profile-pic-container'>
