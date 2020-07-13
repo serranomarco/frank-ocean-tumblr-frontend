@@ -224,6 +224,15 @@ color: rgb(0, 4, 218);
     resize: none;
 }
 
+.caption-photo{
+    border: none;
+    font-family: Arial, Helvetica, sans-serif;
+    margin-top: 20px;
+    height: 180px;
+    width: 470px;
+    resize: none;
+}
+
 .quote-container{
     display: flex;
     flex-direction: row;
