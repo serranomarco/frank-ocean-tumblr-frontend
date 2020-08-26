@@ -279,7 +279,7 @@ const Posts = () => {
                         </div>
                         <div className='post__container'>
                             <div className='post__username'>{post.User.userName}</div>
-                            <img className='post__image' alt={`post`} src={post.Photos[0]?.photoUrl} />
+                            <img className='post__image' alt={`post`} src={post?.Photos[0].photoUrl} />
                             <div className='post__caption'>{post.Photos[0].caption}</div>
                             <div className='post__icon-container'>
                                 <button id={post.id} className='text-post__button' type='submit'>
