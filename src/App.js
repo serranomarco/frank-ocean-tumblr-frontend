@@ -9,7 +9,6 @@ import { PrivateRoute } from './routesUtil';
 
 function App() {
   const { needLogin, username } = useContext(EndlessContext);
-  console.log(needLogin);
   return (
     <BrowserRouter>
       <Switch>
