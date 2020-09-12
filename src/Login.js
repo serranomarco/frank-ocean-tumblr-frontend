@@ -1,55 +1,14 @@
-import React, { useContext, useState } from 'react'
-import { Redirect, NavLink } from 'react-router-dom';
-import { EndlessContext } from './EndlessContext';
-import { baseUrl } from './config';
+import React from 'react'
+import LoginNav from './LoginNav'
+import LoginForm from './LoginForm'
 
 const Login = () => {
-    const { login, username } = useContext(EndlessContext);
 
-    const [loggedIn, setLoggedIn] = useState(false);
-    const [email, setEmail] = useState('demo@example.com');
-    const [password, setPassword] = useState('password');
-
-    const handleLogin = async (e) => {
-        e.preventDefault();
-        const response = await fetch(`${baseUrl}/api/users/token`, {
-            method: 'post',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                email, password
-            })
-        });
-        if (response.ok) {
-            const json = await response.json();
-            console.log(json)
-            login(json.token, json.user.id, json.user.userName);
-            setLoggedIn(true);
-        }
-    }
-
-    const updateEmail = e => {
-        setEmail(e.target.value);
-    }
-
-    const updatePassword = e => {
-        setPassword(e.target.value);
-    }
-    if (loggedIn) return <Redirect to={`/${username}/blog`} />
     return (
         <main className='login'>
-            <nav className='login__nav'>
-                <h1 className='logo'>e</h1>
-                <NavLink className='navlink' to='/register'>
-                    <button className='login__button' type='submit'>Register</button>
-                </NavLink>
-
-            </nav>
+            <LoginNav />
             <h1 className='title'>endless</h1>
-            <form onSubmit={handleLogin} className='login__form'>
-                <input className='login__email' type='text' placeholder='Email' value={email} onChange={updateEmail} />
-                <input className='login__password' type='password' placeholder='Password' value={password} onChange={updatePassword} />
-                <button className='login__button' type='submit'>Login</button>
-            </form>
+            <LoginForm />
         </main >
     );
 }

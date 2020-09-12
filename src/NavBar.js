@@ -11,7 +11,7 @@ const NavBar = () => {
         localStorage.removeItem('state-endless-token')
         localStorage.removeItem('state-endless-userId')
         localStorage.removeItem('state-endless-username')
-        window.location.reload();
+        window.location.replace('/login')
     }
 
     return (

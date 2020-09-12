@@ -76,6 +76,7 @@ main{
 .navlink{
     text-decoration: none;
     color: white;
+    cursor: pointer;
 }
 
 .navlink > button{

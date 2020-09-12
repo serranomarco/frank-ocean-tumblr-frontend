@@ -5,6 +5,7 @@ import { EndlessContext } from './EndlessContext';
 import Login from './Login';
 import Register from './Register'
 import Feed from './Feed'
+import Home from './Home'
 import { PrivateRoute } from './routesUtil';
 
 function App() {
@@ -12,10 +13,10 @@ function App() {
   return (
     <BrowserRouter>
       <Switch>
+        <Route exact path='/' component={Home} />
         <Route path='/login' component={Login} />
         <Route path='/register' component={Register} />
         <PrivateRoute path={`/${username}/blog`} component={Feed} needLogin={needLogin} />
-        <PrivateRoute path={`/`} component={Feed} needLogin={needLogin} />
       </Switch>
     </BrowserRouter>
   )

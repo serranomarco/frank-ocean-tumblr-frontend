@@ -2,6 +2,7 @@ import React, { useContext, useState } from 'react';
 import { NavLink, Redirect } from 'react-router-dom';
 import { EndlessContext } from './EndlessContext';
 import { baseUrl } from './config'
+import LoginNav from './LoginNav';
 
 const Register = () => {
     const { login, username } = useContext(EndlessContext);
@@ -42,13 +43,7 @@ const Register = () => {
     if (loggedIn) return <Redirect to={`/${username}/blog`} />
     return (
         <main className='login'>
-            <nav className='login__nav'>
-                <h1 className='logo'>e</h1>
-                <NavLink className='navlink' to='/login'>
-                    <button className='login__button' type='submit'>Log In</button>
-                </NavLink>
-
-            </nav>
+            <LoginNav />
             <h1 className='title'>endless</h1>
             <form onSubmit={handleRegister} className='login__form'>
                 <input className='login__email' type='text' placeholder='Username' value={userName} onChange={updateUserName} />
