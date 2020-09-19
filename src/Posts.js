@@ -217,6 +217,7 @@ const Posts = () => {
             if (response.ok) {
                 const json = await response.json();
                 setPosts(json.sortedPosts);
+                console.log(json.sortedPosts);
                 updateLikedPosts(json.likedPosts);
             }
         }
@@ -244,12 +245,16 @@ const Posts = () => {
                                     {likedPosts.includes(post.id) ? <FavoriteIcon style={{ fontSize: 30 }} className='post__liked' /> : <FavoriteBorderOutlinedIcon style={{ fontSize: 30 }} className='post__like' />}
                                 </button>
 
-                                <button id={post.id} className='text-post__button' type='submit' onClick={handleTextDelete}>
-                                    <DeleteOutlinedIcon style={{ fontSize: 30 }} className='post__delete' />
-                                </button>
-                                <button id={post.id} className='text-post__button' type='submit' onClick={handleTextModal}>
-                                    <EditOutlinedIcon style={{ fontSize: 30 }} className='post__edit' />
-                                </button>
+                                {post.userId === Number.parseInt(userId) &&
+                                    <>
+                                        <button id={post.id} className='text-post__button' type='submit' onClick={handleTextDelete}>
+                                            <DeleteOutlinedIcon style={{ fontSize: 30 }} className='post__delete' />
+                                        </button>
+                                        <button id={post.id} className='text-post__button' type='submit' onClick={handleTextModal}>
+                                            <EditOutlinedIcon style={{ fontSize: 30 }} className='post__edit' />
+                                        </button>
+                                    </>
+                                }
                             </div>
                             <div className='modal-text-edit modal-text-edit--hidden'>
                                 <form className='post__text-form'>
@@ -271,7 +276,6 @@ const Posts = () => {
                 )
             } else if (post.postTypeId === 2) {
                 //manage photo post
-                console.log(post)
                 return (
                     <div className='container' id={post.id} key={post.id}>
                         <div className='post__profile-pic-container'>
@@ -289,12 +293,16 @@ const Posts = () => {
                                     {likedPosts.includes(post.id) ? <FavoriteIcon style={{ fontSize: 30 }} className='post__liked' /> : <FavoriteBorderOutlinedIcon style={{ fontSize: 30 }} className='post__like' />}
                                 </button>
 
-                                <button id={post.id} className='text-post__button' type='submit' onClick={handlePhotoDelete}>
-                                    <DeleteOutlinedIcon style={{ fontSize: 30 }} className='post__delete' />
-                                </button>
-                                <button id={post.id} className='text-post__button' type='submit' onClick={handleTextModal}>
-                                    <EditOutlinedIcon style={{ fontSize: 30 }} className='post__edit' />
-                                </button>
+                                {post.userId === Number.parseInt(userId) &&
+                                    <>
+                                        <button id={post.id} className='text-post__button' type='submit' onClick={handleTextDelete}>
+                                            <DeleteOutlinedIcon style={{ fontSize: 30 }} className='post__delete' />
+                                        </button>
+                                        <button id={post.id} className='text-post__button' type='submit' onClick={handleTextModal}>
+                                            <EditOutlinedIcon style={{ fontSize: 30 }} className='post__edit' />
+                                        </button>
+                                    </>
+                                }
                             </div>
                         </div>
                     </div>
@@ -316,12 +324,16 @@ const Posts = () => {
                                 <button id={post.id} className='text-post__button' type='submit' onClick={handleLike}>
                                     {likedPosts.includes(post.id) ? <FavoriteIcon style={{ fontSize: 30 }} className='post__liked' /> : <FavoriteBorderOutlinedIcon style={{ fontSize: 30 }} className='post__like' />}
                                 </button>
-                                <button id={post.id} className='text-post__button' type='submit' onClick={handleQuoteDelete}>
-                                    <DeleteOutlinedIcon style={{ fontSize: 30 }} className='post__delete' />
-                                </button>
-                                <button id={post.id} className='text-post__button' type='submit' onClick={handleQuoteModal}>
-                                    <EditOutlinedIcon style={{ fontSize: 30 }} className='post__edit' />
-                                </button>
+                                {post.userId === Number.parseInt(userId) &&
+                                    <>
+                                        <button id={post.id} className='text-post__button' type='submit' onClick={handleTextDelete}>
+                                            <DeleteOutlinedIcon style={{ fontSize: 30 }} className='post__delete' />
+                                        </button>
+                                        <button id={post.id} className='text-post__button' type='submit' onClick={handleTextModal}>
+                                            <EditOutlinedIcon style={{ fontSize: 30 }} className='post__edit' />
+                                        </button>
+                                    </>
+                                }
                             </div>
                             <div className='modal-quote-edit modal-quote-edit--hidden'>
                                 <form className='post__quote-form'>
