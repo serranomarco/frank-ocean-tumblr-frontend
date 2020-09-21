@@ -1,3 +1,24 @@
+# HikeTrack
+
+## Live Site
+https://endless-tumblr.herokuapp.com/
+
+## Setup
+1. Clone project
+2. Create .env files in the root directory (example.env included)
+3. install packages
+4. From the root directory, run [npm start]
+5. Setup AWS configuration running
+aws configure
+
+### React Application:
+- JWT
+- React Router
+- Hooks
+- Material UI
+- AWS S3
+- Multer
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts

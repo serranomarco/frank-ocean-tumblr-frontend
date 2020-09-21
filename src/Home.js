@@ -1,7 +1,10 @@
 import React from 'react';
+import { NavLink } from 'react-router-dom';
+
+import { Button } from '@material-ui/core'
+
 import LoginNav from './LoginNav';
 import BottomNav from './BottomNav'
-import { Button } from '@material-ui/core'
 
 const Home = () => {
     return (
@@ -12,8 +15,12 @@ const Home = () => {
                     <p style={{ color: '#49986b', fontFamily: 'merriweather', fontSize: '25px', marginBottom: '0' }}>Frank Ocean Inpsired Tumblr</p>
                     <p style={{ color: '#49986b', fontFamily: 'merriweather', fontSize: '25px', marginBottom: '0' }}>Follow other users and share posts</p>
                     <p style={{ color: '#49986b', fontFamily: 'merriweather', fontSize: '25px', marginBottom: '100px' }}>for other people to interact with</p>
-                    <Button style={{ color: 'white', backgroundColor: '#49986b', fontWeight: '600', marginBottom: '10px', width: '400px' }}>Log In</Button>
-                    <Button style={{ color: 'white', backgroundColor: '#49986b', fontWeight: '600', width: '400px' }}>Register</Button>
+                    <NavLink className='navlink' to='/login'>
+                        <Button style={{ color: 'white', backgroundColor: '#49986b', fontWeight: '600', marginBottom: '10px', width: '400px' }}>Log In</Button>
+                    </NavLink>
+                    <NavLink className='navlink' to='/register'>
+                        <Button style={{ color: 'white', backgroundColor: '#49986b', fontWeight: '600', width: '400px' }}>Register</Button>
+                    </NavLink>
                 </div>
             </div>
             <LoginNav />
