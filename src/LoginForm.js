@@ -14,7 +14,10 @@ const LoginForm = () => {
         e.preventDefault();
         const response = await fetch(`${baseUrl}/api/users/token`, {
             method: 'post',
-            headers: { 'Content-Type': 'application/json' },
+            headers: { 
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': '*' 
+            },
             body: JSON.stringify({
                 email, password
             })
